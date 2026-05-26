@@ -11,20 +11,31 @@ spring:
         webflux:
           routes:
             - id: pos-service
-              uri: http://localhost:8081
+              uri: lb://pos-service
               predicates:
                 - Path=/api/pos/**
 
             - id: supplier-service
-              uri: http://localhost:8082
+              uri: lb://supplier-service
               predicates:
                 - Path=/api/supplier/**
+
+            - id: auth-service
+              uri: lb://auth-service
+              predicates:
+                - Path=/api/auth/**
+
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/notifications/**
 
           globalcors:
             cors-configurations:
               '[/**]':
                 allowedOrigins:
                   - "http://localhost:3000"
+                  - "http://localhost:5173"
                 allowedMethods:
                   - GET
                   - POST
@@ -34,6 +45,17 @@ spring:
                 allowedHeaders: "*"
                 allowCredentials: true
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+    com.netflix.eureka: WARN
+    com.netflix.discovery: WARN

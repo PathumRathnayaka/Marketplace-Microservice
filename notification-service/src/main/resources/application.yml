@@ -42,6 +42,15 @@ notification:
     fixed-delay-ms: ${NOTIFICATION_RETRY_DELAY_MS:300000}
     max-attempts: ${NOTIFICATION_RETRY_MAX_ATTEMPTS:3}
 
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
 logging:
   level:
     com.cloudpos.notification: INFO

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: supplier
+    name: supplier-service
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ep-rapid-cell-apza906x-pooler.c-7.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_U2M5GuKozFJc&sslmode=require&channelBinding=require}
     driver-class-name: org.postgresql.Driver
@@ -20,8 +20,16 @@ spring:
 
 app:
   jwt:
-    secret: ${APP_JWT_SECRET:cloud-pos-supplier-marketplace-super-secret-key-change-in-production}
-    expiration-ms: ${APP_JWT_EXPIRATION_MS:86400000}
+    secret: ${JWT_SECRET:MzM4MzE1N2U2YzRjOGY5MTU2YjZlNmY1YjQ1MTBkNzhjOWYzZDY0MmFhMzM3OTBmNzg2N2I5ZjM1M2FkOGY2ZA==}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
 
 springdoc:
   swagger-ui:

@@ -1,59 +1,16 @@
 package com.cloudpos.supplier.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.Date;
-import javax.crypto.SecretKey;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-@Component
+/**
+ * @deprecated Token generation has been moved to auth-service as part of auth
+ *             centralization.
+ *             This class is intentionally empty and will be removed in the next
+ *             cleanup pass.
+ *             All JWT validation is now handled by
+ *             {@link com.cloudpos.common.security.JwtUtil}.
+ */
+@Deprecated(since = "2.0", forRemoval = true)
 public class JwtTokenProvider {
-
-	private final String jwtSecret;
-	private final long jwtExpirationMs;
-
-	public JwtTokenProvider(
-			@Value("${app.jwt.secret}") String jwtSecret,
-			@Value("${app.jwt.expiration-ms}") long jwtExpirationMs) {
-		this.jwtSecret = jwtSecret;
-		this.jwtExpirationMs = jwtExpirationMs;
-	}
-
-	public String generateToken(SupplierPrincipal principal) {
-		Date now = new Date();
-		Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
-		return Jwts.builder()
-				.subject(principal.getUsername())
-				.claim("supplierId", principal.getId())
-				.claim("role", "ROLE_SUPPLIER")
-				.issuedAt(now)
-				.expiration(expiryDate)
-				.signWith(getSigningKey())
-				.compact();
-	}
-
-	public String getUsernameFromToken(String token) {
-		return getClaims(token).getSubject();
-	}
-
-	public boolean validateToken(String token) {
-		getClaims(token);
-		return true;
-	}
-
-	private Claims getClaims(String token) {
-		return Jwts.parser()
-				.verifyWith((SecretKey) getSigningKey())
-				.build()
-				.parseSignedClaims(token)
-				.getPayload();
-	}
-
-	private Key getSigningKey() {
-		return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-	}
+	// Removed — all token issuance is delegated to auth-service.
+	// JWT validation is handled by JwtAuthenticationFilter via common-library
+	// JwtUtil.
 }
