@@ -6,12 +6,9 @@ import com.cloudpos.notification.entity.SmsLog;
 import com.cloudpos.notification.mapper.NotificationMapper;
 import com.cloudpos.notification.notification.NotificationStatus;
 import com.cloudpos.notification.repository.SmsLogRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SmsServiceImpl implements SmsService {

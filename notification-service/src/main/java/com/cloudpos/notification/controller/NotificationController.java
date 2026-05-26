@@ -5,7 +5,6 @@ import com.cloudpos.notification.dto.NotificationResponseDTO;
 import com.cloudpos.notification.dto.SendNotificationRequestDTO;
 import com.cloudpos.notification.service.NotificationService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

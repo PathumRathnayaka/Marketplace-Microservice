@@ -5,7 +5,6 @@ import com.cloudpos.notification.dto.SendSmsRequestDTO;
 import com.cloudpos.notification.dto.SmsResponseDTO;
 import com.cloudpos.notification.sms.SmsService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/sms")
-@RequiredArgsConstructor
 public class SmsController {
 
     private final SmsService smsService;
+
+    public SmsController(SmsService smsService) {
+        this.smsService = smsService;
+    }
 
     @PostMapping("/send")
     public ResponseEntity<ApiResponse<SmsResponseDTO>> send(@Valid @RequestBody SendSmsRequestDTO request) {

@@ -4,10 +4,6 @@ import com.cloudpos.notification.notification.NotificationChannel;
 import com.cloudpos.notification.notification.NotificationPriority;
 import com.cloudpos.notification.notification.NotificationStatus;
 import com.cloudpos.notification.notification.NotificationType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
