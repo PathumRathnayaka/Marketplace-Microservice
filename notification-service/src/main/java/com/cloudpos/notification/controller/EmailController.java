@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/email")
-@RequiredArgsConstructor
 public class EmailController {
 
     private final EmailService emailService;
+
+    public EmailController(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @PostMapping("/send")
     public ResponseEntity<ApiResponse<EmailResponseDTO>> send(@Valid @RequestBody SendEmailRequestDTO request) {

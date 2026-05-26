@@ -14,24 +14,33 @@ import com.cloudpos.notification.notification.NotificationStatus;
 import com.cloudpos.notification.push.PushNotificationService;
 import com.cloudpos.notification.repository.NotificationRepository;
 import com.cloudpos.notification.sms.SmsService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
     private final NotificationRepository notificationRepository;
     private final NotificationMapper notificationMapper;
     private final EmailService emailService;
     private final SmsService smsService;
     private final PushNotificationService pushNotificationService;
+
+    public NotificationServiceImpl(NotificationRepository notificationRepository, NotificationMapper notificationMapper,
+            EmailService emailService, SmsService smsService, PushNotificationService pushNotificationService) {
+        this.notificationRepository = notificationRepository;
+        this.notificationMapper = notificationMapper;
+        this.emailService = emailService;
+        this.smsService = smsService;
+        this.pushNotificationService = pushNotificationService;
+    }
 
     @Override
     @Transactional
@@ -92,7 +101,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void retryFailedNotifications() {
-        List<Notification> failedNotifications = notificationRepository.findByStatusAndDeletedFalse(NotificationStatus.FAILED);
+        List<Notification> failedNotifications = notificationRepository
+                .findByStatusAndDeletedFalse(NotificationStatus.FAILED);
         failedNotifications.forEach(notification -> {
             try {
                 notification.setStatus(NotificationStatus.RETRYING);
@@ -110,20 +120,20 @@ public class NotificationServiceImpl implements NotificationService {
 
     private void dispatch(Notification notification) {
         if (notification.getChannel() == NotificationChannel.EMAIL) {
-            emailService.sendPlainEmail(SendEmailRequestDTO.builder()
-                    .notificationId(notification.getId())
-                    .recipientEmail(notification.getRecipient())
-                    .subject(notification.getTitle())
-                    .body(notification.getMessage())
-                    .build());
+            SendEmailRequestDTO emailRequest = new SendEmailRequestDTO();
+            emailRequest.setNotificationId(notification.getId());
+            emailRequest.setRecipientEmail(notification.getRecipient());
+            emailRequest.setSubject(notification.getTitle());
+            emailRequest.setBody(notification.getMessage());
+            emailService.sendPlainEmail(emailRequest);
             return;
         }
         if (notification.getChannel() == NotificationChannel.SMS) {
-            smsService.sendSms(SendSmsRequestDTO.builder()
-                    .notificationId(notification.getId())
-                    .phoneNumber(notification.getRecipient())
-                    .message(notification.getMessage())
-                    .build());
+            SendSmsRequestDTO smsRequest = new SendSmsRequestDTO();
+            smsRequest.setNotificationId(notification.getId());
+            smsRequest.setPhoneNumber(notification.getRecipient());
+            smsRequest.setMessage(notification.getMessage());
+            smsService.sendSms(smsRequest);
             return;
         }
         if (notification.getChannel() == NotificationChannel.PUSH) {

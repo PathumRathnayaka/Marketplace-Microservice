@@ -17,17 +17,29 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
+
+    private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
 
     private final JavaMailSender mailSender;
     private final EmailLogRepository emailLogRepository;
     private final NotificationMapper notificationMapper;
     private final NotificationTemplateService templateService;
+
+    public EmailServiceImpl(JavaMailSender mailSender, EmailLogRepository emailLogRepository,
+            NotificationMapper notificationMapper, NotificationTemplateService templateService) {
+        this.mailSender = mailSender;
+        this.emailLogRepository = emailLogRepository;
+        this.notificationMapper = notificationMapper;
+        this.templateService = templateService;
+    }
 
     @Override
     public EmailResponseDTO sendPlainEmail(SendEmailRequestDTO request) {

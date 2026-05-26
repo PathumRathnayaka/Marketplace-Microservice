@@ -20,14 +20,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
-@RequiredArgsConstructor
 public class NotificationController {
 
     private final NotificationService notificationService;
 
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
     @PostMapping("/send")
-    public ResponseEntity<ApiResponse<NotificationResponseDTO>> send(@Valid @RequestBody SendNotificationRequestDTO request) {
-        return ResponseEntity.ok(ApiResponse.success("Notification sent", notificationService.sendNotification(request)));
+    public ResponseEntity<ApiResponse<NotificationResponseDTO>> send(
+            @Valid @RequestBody SendNotificationRequestDTO request) {
+        return ResponseEntity
+                .ok(ApiResponse.success("Notification sent", notificationService.sendNotification(request)));
     }
 
     @GetMapping
@@ -37,12 +42,14 @@ public class NotificationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<NotificationResponseDTO>> getById(@PathVariable String id) {
-        return ResponseEntity.ok(ApiResponse.success("Notification fetched", notificationService.getNotificationById(id)));
+        return ResponseEntity
+                .ok(ApiResponse.success("Notification fetched", notificationService.getNotificationById(id)));
     }
 
     @PutMapping("/{id}/read")
     public ResponseEntity<ApiResponse<NotificationResponseDTO>> markAsRead(@PathVariable String id) {
-        return ResponseEntity.ok(ApiResponse.success("Notification marked as read", notificationService.markAsRead(id)));
+        return ResponseEntity
+                .ok(ApiResponse.success("Notification marked as read", notificationService.markAsRead(id)));
     }
 
     @DeleteMapping("/{id}")

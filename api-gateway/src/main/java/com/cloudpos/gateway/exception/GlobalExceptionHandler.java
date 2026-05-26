@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+import org.springframework.web.server.WebExceptionHandler;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @Order(-2)
-public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
+public class GlobalExceptionHandler implements WebExceptionHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 

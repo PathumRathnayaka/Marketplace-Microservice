@@ -15,69 +15,69 @@ import org.springframework.stereotype.Component;
 public class NotificationMapper {
 
     public Notification toEntity(SendNotificationRequestDTO request) {
-        return Notification.builder()
-                .userId(request.getUserId())
-                .tenantId(request.getTenantId())
-                .recipient(request.getRecipient())
-                .recipientType(request.getRecipientType())
-                .notificationType(request.getNotificationType())
-                .channel(request.getChannel())
-                .title(request.getTitle())
-                .message(request.getMessage())
-                .priority(request.getPriority() == null ? NotificationPriority.NORMAL : request.getPriority())
-                .status(NotificationStatus.PENDING)
-                .referenceId(request.getReferenceId())
-                .deleted(false)
-                .build();
+        Notification notification = new Notification();
+        notification.setUserId(request.getUserId());
+        notification.setTenantId(request.getTenantId());
+        notification.setRecipient(request.getRecipient());
+        notification.setRecipientType(request.getRecipientType());
+        notification.setNotificationType(request.getNotificationType());
+        notification.setChannel(request.getChannel());
+        notification.setTitle(request.getTitle());
+        notification.setMessage(request.getMessage());
+        notification.setPriority(request.getPriority() == null ? NotificationPriority.NORMAL : request.getPriority());
+        notification.setStatus(NotificationStatus.PENDING);
+        notification.setReferenceId(request.getReferenceId());
+        notification.setDeleted(false);
+        return notification;
     }
 
     public NotificationResponseDTO toResponse(Notification notification) {
-        return NotificationResponseDTO.builder()
-                .id(notification.getId())
-                .userId(notification.getUserId())
-                .tenantId(notification.getTenantId())
-                .recipient(notification.getRecipient())
-                .recipientType(notification.getRecipientType())
-                .notificationType(notification.getNotificationType())
-                .channel(notification.getChannel())
-                .title(notification.getTitle())
-                .message(notification.getMessage())
-                .status(notification.getStatus())
-                .priority(notification.getPriority())
-                .referenceId(notification.getReferenceId())
-                .createdAt(notification.getCreatedAt())
-                .updatedAt(notification.getUpdatedAt())
-                .sentAt(notification.getSentAt())
-                .readAt(notification.getReadAt())
-                .build();
+        NotificationResponseDTO response = new NotificationResponseDTO();
+        response.setId(notification.getId());
+        response.setUserId(notification.getUserId());
+        response.setTenantId(notification.getTenantId());
+        response.setRecipient(notification.getRecipient());
+        response.setRecipientType(notification.getRecipientType());
+        response.setNotificationType(notification.getNotificationType());
+        response.setChannel(notification.getChannel());
+        response.setTitle(notification.getTitle());
+        response.setMessage(notification.getMessage());
+        response.setStatus(notification.getStatus());
+        response.setPriority(notification.getPriority());
+        response.setReferenceId(notification.getReferenceId());
+        response.setCreatedAt(notification.getCreatedAt());
+        response.setUpdatedAt(notification.getUpdatedAt());
+        response.setSentAt(notification.getSentAt());
+        response.setReadAt(notification.getReadAt());
+        return response;
     }
 
     public EmailResponseDTO toEmailResponse(EmailLog emailLog) {
-        return EmailResponseDTO.builder()
-                .id(emailLog.getId())
-                .notificationId(emailLog.getNotificationId())
-                .recipientEmail(emailLog.getRecipientEmail())
-                .subject(emailLog.getSubject())
-                .status(emailLog.getStatus())
-                .errorMessage(emailLog.getErrorMessage())
-                .retryCount(emailLog.getRetryCount())
-                .providerResponse(emailLog.getProviderResponse())
-                .createdAt(emailLog.getCreatedAt())
-                .sentAt(emailLog.getSentAt())
-                .build();
+        EmailResponseDTO response = new EmailResponseDTO();
+        response.setId(emailLog.getId());
+        response.setNotificationId(emailLog.getNotificationId());
+        response.setRecipientEmail(emailLog.getRecipientEmail());
+        response.setSubject(emailLog.getSubject());
+        response.setStatus(emailLog.getStatus());
+        response.setErrorMessage(emailLog.getErrorMessage());
+        response.setRetryCount(emailLog.getRetryCount());
+        response.setProviderResponse(emailLog.getProviderResponse());
+        response.setCreatedAt(emailLog.getCreatedAt());
+        response.setSentAt(emailLog.getSentAt());
+        return response;
     }
 
     public SmsResponseDTO toSmsResponse(SmsLog smsLog) {
-        return SmsResponseDTO.builder()
-                .id(smsLog.getId())
-                .notificationId(smsLog.getNotificationId())
-                .phoneNumber(smsLog.getPhoneNumber())
-                .status(smsLog.getStatus())
-                .providerResponse(smsLog.getProviderResponse())
-                .errorMessage(smsLog.getErrorMessage())
-                .retryCount(smsLog.getRetryCount())
-                .createdAt(smsLog.getCreatedAt())
-                .sentAt(smsLog.getSentAt())
-                .build();
+        SmsResponseDTO response = new SmsResponseDTO();
+        response.setId(smsLog.getId());
+        response.setNotificationId(smsLog.getNotificationId());
+        response.setPhoneNumber(smsLog.getPhoneNumber());
+        response.setStatus(smsLog.getStatus());
+        response.setProviderResponse(smsLog.getProviderResponse());
+        response.setErrorMessage(smsLog.getErrorMessage());
+        response.setRetryCount(smsLog.getRetryCount());
+        response.setCreatedAt(smsLog.getCreatedAt());
+        response.setSentAt(smsLog.getSentAt());
+        return response;
     }
 }
