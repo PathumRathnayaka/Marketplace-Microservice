@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: pos-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/pos/**
+
+            - id: supplier-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/supplier/**
+
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "http://localhost:3000"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders: "*"
+                allowCredentials: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

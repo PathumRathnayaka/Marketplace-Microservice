@@ -1,0 +1,39 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://ep-lingering-shadow-ao19efr6-pooler.c-2.ap-southeast-1.aws.neon.tech/authdb?user=neondb_owner&password=npg_mgnE9YwWe1iJ&sslmode=require&channelBinding=require
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  devtools:
+    restart:
+      enabled: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:MzM4MzE1N2U2YzRjOGY5MTU2YjZlNmY1YjQ1MTBkNzhjOWYzZDY0MmFhMzM3OTBmNzg2N2I5ZjM1M2FkOGY2ZA==}
+    access-token-expiration-ms: 86400000
+    refresh-token-expiration-ms: 2592000000
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://localhost:8080}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
