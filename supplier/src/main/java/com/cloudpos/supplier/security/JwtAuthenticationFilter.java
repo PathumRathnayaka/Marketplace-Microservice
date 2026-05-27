@@ -46,7 +46,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				String tenantId = JwtUtil.extractTenantId(token, jwtSecret);
 
 				List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email,
+				// Create a SupplierPrincipal from JWT claims to satisfy SecurityUtil checks
+				SupplierPrincipal principal = new SupplierPrincipal(userId, email, "", true);
+
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal,
 						null, authorities);
 				// Attach extra claims so downstream controllers can access them
 				authentication.setDetails(new SupplierAuthDetails(userId, tenantId, role));

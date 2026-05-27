@@ -27,9 +27,21 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	@Transactional
 	public SupplierResponse updateProfile(SupplierUpdateRequest request) {
-		Supplier supplier = getCurrentSupplier();
+		String supplierId = SecurityUtil.currentSupplierId();
+		Supplier supplier = supplierRepository.findByIdAndDeletedFalse(supplierId)
+				.orElseGet(() -> {
+					Supplier newSupplier = new Supplier();
+					newSupplier.setId(supplierId);
+					newSupplier.setPassword(""); // Password managed by auth-service
+					newSupplier.setActive(true);
+					newSupplier.setVerified(false);
+					newSupplier.setDeleted(false);
+					return newSupplier;
+				});
+
 		String email = request.getEmail().trim().toLowerCase();
-		if (!supplier.getEmail().equalsIgnoreCase(email) && supplierRepository.existsByEmail(email)) {
+		if (supplier.getEmail() != null && !supplier.getEmail().equalsIgnoreCase(email)
+				&& supplierRepository.existsByEmail(email)) {
 			throw new DuplicateResourceException("Email is already registered");
 		}
 		supplier.setBusinessName(request.getBusinessName());
