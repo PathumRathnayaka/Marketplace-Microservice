@@ -14,11 +14,15 @@ spring:
               uri: lb://pos-service
               predicates:
                 - Path=/api/pos/**
+              filters:
+                - StripPrefix=2
 
             - id: supplier-service
               uri: lb://supplier-service
               predicates:
                 - Path=/api/supplier/**
+              filters:
+                - StripPrefix=2
 
             - id: auth-service
               uri: lb://auth-service
@@ -29,6 +33,8 @@ spring:
               uri: lb://notification-service
               predicates:
                 - Path=/api/notifications/**
+              filters:
+                - StripPrefix=2
 
           globalcors:
             cors-configurations:
