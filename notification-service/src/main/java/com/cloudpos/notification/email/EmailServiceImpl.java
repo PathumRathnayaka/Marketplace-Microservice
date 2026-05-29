@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
+    private final String fromEmail;
 
     private final JavaMailSender mailSender;
     private final EmailLogRepository emailLogRepository;
@@ -30,11 +31,13 @@ public class EmailServiceImpl implements EmailService {
     private final NotificationTemplateService templateService;
 
     public EmailServiceImpl(JavaMailSender mailSender, EmailLogRepository emailLogRepository,
-            NotificationMapper notificationMapper, NotificationTemplateService templateService) {
+            NotificationMapper notificationMapper, NotificationTemplateService templateService,
+            @org.springframework.beans.factory.annotation.Value("${app.mail.from}") String fromEmail) {
         this.mailSender = mailSender;
         this.emailLogRepository = emailLogRepository;
         this.notificationMapper = notificationMapper;
         this.templateService = templateService;
+        this.fromEmail = fromEmail;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class EmailServiceImpl implements EmailService {
         EmailLog logEntry = createLog(request);
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
             message.setTo(request.getRecipientEmail());
             message.setSubject(request.getSubject());
             message.setText(request.getBody());
@@ -60,6 +64,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(fromEmail);
             helper.setTo(request.getRecipientEmail());
             helper.setSubject(request.getSubject());
             helper.setText(request.getBody(), true);

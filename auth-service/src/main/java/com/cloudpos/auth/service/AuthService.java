@@ -9,6 +9,10 @@ import com.cloudpos.auth.dto.UserResponseDTO;
 
 public interface AuthService {
 
+    void requestRegistrationOtp(String email);
+
+    String verifyRegistrationOtp(String email, String otp);
+
     AuthResponseDTO registerOwner(RegisterOwnerRequestDTO request);
 
     AuthResponseDTO registerSupplier(RegisterSupplierRequestDTO request);

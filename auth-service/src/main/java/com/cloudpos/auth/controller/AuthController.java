@@ -5,6 +5,8 @@ import com.cloudpos.auth.dto.AuthResponseDTO;
 import com.cloudpos.auth.dto.LoginRequestDTO;
 import com.cloudpos.auth.dto.LogoutRequestDTO;
 import com.cloudpos.auth.dto.RefreshTokenRequestDTO;
+import com.cloudpos.auth.dto.OtpRequestDTO;
+import com.cloudpos.auth.dto.OtpVerifyRequestDTO;
 import com.cloudpos.auth.dto.RegisterOwnerRequestDTO;
 import com.cloudpos.auth.dto.RegisterSupplierRequestDTO;
 import com.cloudpos.auth.dto.TokenValidationRequestDTO;
@@ -30,6 +32,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    @PostMapping("/request-registration-otp")
+    @Operation(summary = "Request an OTP for email verification during registration")
+    public ResponseEntity<ApiResponse<Void>> requestRegistrationOtp(@Valid @RequestBody OtpRequestDTO request) {
+        authService.requestRegistrationOtp(request.getEmail());
+        return ResponseEntity.ok(ApiResponse.success("OTP sent successfully", null));
+    }
+
+    @PostMapping("/verify-registration-otp")
+    @Operation(summary = "Verify the registration OTP")
+    public ResponseEntity<ApiResponse<String>> verifyRegistrationOtp(@Valid @RequestBody OtpVerifyRequestDTO request) {
+        String verificationToken = authService.verifyRegistrationOtp(request.getEmail(), request.getOtp());
+        return ResponseEntity.ok(ApiResponse.success("OTP verified successfully", verificationToken));
+    }
 
     @PostMapping("/register-owner")
     @Operation(summary = "Register a shop owner")

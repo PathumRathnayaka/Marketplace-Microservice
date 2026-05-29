@@ -25,6 +25,10 @@ public class RegisterOwnerRequestDTO {
     @Size(max = 30, message = "Phone must not exceed 30 characters")
     private String phone;
 
-    @Size(max = 36, message = "Tenant ID must not exceed 36 characters")
-    private String tenantId;
+    @NotBlank(message = "Business name is required")
+    @Size(max = 150, message = "Business name must not exceed 150 characters")
+    private String businessName;
+
+    @NotBlank(message = "Verification token is required")
+    private String verificationToken;
 }

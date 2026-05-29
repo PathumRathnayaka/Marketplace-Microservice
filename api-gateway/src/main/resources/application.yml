@@ -65,3 +65,7 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     com.netflix.eureka: WARN
     com.netflix.discovery: WARN
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:MzM4MzE1N2U2YzRjOGY5MTU2YjZlNmY1YjQ1MTBkNzhjOWYzZDY0MmFhMzM3OTBmNzg2N2I5ZjM1M2FkOGY2ZA==}

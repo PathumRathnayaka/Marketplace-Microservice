@@ -22,11 +22,13 @@ public class RabbitMQConfig {
     public static final String ROUTING_SUPPLIER_OFFER = "supplier.offer.created";
     public static final String ROUTING_USER_REGISTERED = "user.registered";
     public static final String ROUTING_NOTIFICATION = "notification.send";
+    public static final String ROUTING_OTP_REQUESTED = "user.registration.otp.requested";
 
     public static final String QUEUE_LOW_STOCK = "cloudpos.low-stock.queue";
     public static final String QUEUE_SUPPLIER_OFFER = "cloudpos.supplier-offer.queue";
     public static final String QUEUE_USER_REGISTERED = "cloudpos.user-registered.queue";
     public static final String QUEUE_NOTIFICATION = "cloudpos.notification.queue";
+    public static final String QUEUE_OTP_REQUESTED = "cloudpos.otp-requested.queue";
 
     @Bean
     public TopicExchange cloudposEventsExchange() {
@@ -54,6 +56,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue otpRequestedQueue() {
+        return new Queue(QUEUE_OTP_REQUESTED, true);
+    }
+
+    @Bean
     public Binding lowStockBinding() {
         return BindingBuilder.bind(lowStockQueue()).to(cloudposEventsExchange()).with(ROUTING_LOW_STOCK);
     }
@@ -71,6 +78,11 @@ public class RabbitMQConfig {
     @Bean
     public Binding notificationBinding() {
         return BindingBuilder.bind(notificationQueue()).to(cloudposEventsExchange()).with(ROUTING_NOTIFICATION);
+    }
+
+    @Bean
+    public Binding otpRequestedBinding() {
+        return BindingBuilder.bind(otpRequestedQueue()).to(cloudposEventsExchange()).with(ROUTING_OTP_REQUESTED);
     }
 
     @Bean
